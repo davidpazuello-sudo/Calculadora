@@ -634,7 +634,6 @@ body.calc-avancada .adic-auto-row{display:none}
       <div class="settings-head">
         <div>
           <h2>Configuracoes de precos</h2>
-          <div class="sub">Compare o valor da calculadora com a Tabela de Precos (TP) e edite. Gere um novo HTML para salvar.</div>
         </div>
         <button class="set-close" type="button" aria-label="Fechar" onclick="closeSettings()">&times;</button>
       </div>
@@ -2503,7 +2502,7 @@ function buildSettingsTable(){
   let modOpts='<option value="all">Todos os modulos</option>'+secs.map(s=>`<option value="${s.key}" ${setFltMod===s.key?'selected':''}>${s.name}</option>`).join('');
   let fxOpts='<option value="all">Todas as faixas</option>'+labels.map((l,i)=>`<option value="${i}" ${String(setFltFaixa)===String(i)?'selected':''}>${l}</option>`).join('');
   let sortOpts=[['faixa','Faixa ↑'],['faixaDesc','Faixa ↓'],['modulo','Modulo']].map(o=>`<option value="${o[0]}" ${setSort===o[0]?'selected':''}>${o[1]}</option>`).join('');
-  let h=`<div class="set-summary">Preco da faixa = soma dos itens (edite no detalhe ▸) ou override manual. Desconto incide sobre o preco. <b id="set-divcount">${dc}</b> divergencia(s) vs TP. Salvo automaticamente.</div>`;
+  let h=``;
   h+=`<div class="set-filterbar">
     <label>Modulo <select onchange="setFltMod=this.value;buildSettingsTable()">${modOpts}</select></label>
     <label>Faixa <select onchange="setFltFaixa=this.value;buildSettingsTable()">${fxOpts}</select></label>
