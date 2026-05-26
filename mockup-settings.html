@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup — Configurações de Preços</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#e8e8e4;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}
+
+/* MODAL */
+.modal{background:#fff;border-radius:18px;width:900px;max-width:100%;box-shadow:0 32px 80px rgba(0,0,0,.28);display:flex;flex-direction:column;max-height:88vh;overflow:hidden}
+
+/* HEADER */
+.modal-head{background:linear-gradient(135deg,#0f2e6e 0%,#1B4FD8 60%,#2563eb 100%);padding:16px 22px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-radius:18px 18px 0 0}
+.modal-head-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:-.02em}
+.modal-close{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{background:rgba(255,255,255,.28)}
+
+/* BODY: SPLIT */
+.modal-body{display:flex;flex:1;overflow:hidden}
+
+/* SIDEBAR */
+.sidebar{width:220px;flex-shrink:0;border-right:1px solid #E0DDD8;display:flex;flex-direction:column;background:#FAFAF8;overflow:hidden}
+.sidebar-header{padding:12px 14px 8px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:1px solid #E0DDD8}
+.sidebar-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:#7A776F}
+.sidebar-badge{background:#fef3c7;color:#b45309;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;border:1px solid #fde68a}
+.sidebar-list{flex:1;overflow-y:auto;padding:6px 8px;display:flex;flex-direction:column;gap:1px}
+.sidebar-list::-webkit-scrollbar{width:3px}
+.sidebar-list::-webkit-scrollbar-thumb{background:#E0DDD8;border-radius:2px}
+.sidebar-group-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#b0ada6;padding:8px 6px 4px}
+.sidebar-item{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:9px;cursor:pointer;transition:background .12s;border:1px solid transparent}
+.sidebar-item:hover{background:#F0EDE8}
+.sidebar-item.active{background:#EEF2FF;border-color:#C7D2FE}
+.sidebar-ico{font-size:15px;flex-shrink:0;width:22px;text-align:center}
+.sidebar-name{font-size:12px;font-weight:500;color:#1A1916;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sidebar-item.active .sidebar-name{color:#1B4FD8;font-weight:600}
+.sidebar-status{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.sidebar-status.ok{background:#16a34a}
+.sidebar-status.warn{background:#f59e0b}
+
+/* CONTENT */
+.content{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#fff}
+.content-header{padding:14px 20px 10px;border-bottom:1px solid #E0DDD8;flex-shrink:0;display:flex;align-items:center;justify-content:space-between}
+.content-title{font-size:16px;font-weight:700;color:#1A1916;display:flex;align-items:center;gap:8px}
+.content-title span{font-size:18px}
+.content-tag{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;background:#dcfce7;color:#16a34a}
+.content-tag.warn{background:#fef3c7;color:#b45309}
+.content-scroll{flex:1;overflow-y:auto;padding:14px 20px}
+.content-scroll::-webkit-scrollbar{width:4px}
+.content-scroll::-webkit-scrollbar-thumb{background:#E0DDD8;border-radius:2px}
+
+/* TABLE */
+.tier-table{width:100%;border-collapse:collapse}
+.tier-table thead th{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#7A776F;font-weight:700;padding:6px 10px;text-align:left;background:#F7F7F5;border-bottom:1px solid #E0DDD8}
+.tier-table thead th:not(:first-child){text-align:right}
+.tier-table tbody tr{border-bottom:1px solid #F0EDE8;transition:background .1s;cursor:default}
+.tier-table tbody tr:hover{background:#F7F9FF}
+.tier-table tbody tr:last-child{border-bottom:none}
+.tier-table td{padding:9px 10px;vertical-align:middle;font-size:12px}
+.tier-table td:not(:first-child){text-align:right}
+
+.tier-label{font-weight:600;color:#1A1916;white-space:nowrap}
+.tier-sublabel{font-size:10px;color:#7A776F;font-weight:400;display:block;margin-top:1px}
+.tier-input{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:#1A1916;background:#F7F7F5;border:1px solid #E0DDD8;border-radius:7px;padding:5px 8px;text-align:right;width:110px;transition:border-color .15s,background .15s}
+.tier-input:focus{outline:none;border-color:#1B4FD8;background:#fff;box-shadow:0 0 0 3px #EEF2FF}
+.tier-disc{font-family:'DM Mono',monospace;font-size:11px;color:#7A776F;background:#F0EDE8;border:1px solid #E0DDD8;border-radius:6px;padding:4px 7px;width:58px;text-align:right;transition:border-color .15s}
+.tier-disc:focus{outline:none;border-color:#1B4FD8}
+.tier-final{font-family:'DM Mono',monospace;font-size:13px;font-weight:600;color:#16a34a}
+.tier-delta{font-family:'DM Mono',monospace;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;display:inline-block}
+.tier-delta.eq{color:#16a34a;background:#dcfce7}
+.tier-delta.ne{color:#dc2626;background:#fee2e2}
+.tier-expand{font-size:10px;color:#1B4FD8;font-weight:600;background:none;border:none;cursor:pointer;padding:0;font-family:inherit;text-decoration:underline;text-underline-offset:2px;opacity:.7}
+.tier-expand:hover{opacity:1}
+.tier-detail{background:#F7F9FF;border-radius:0}
+.tier-detail td{padding:6px 10px 10px 28px}
+.tier-detail-inner{font-size:11px;color:#7A776F;line-height:1.8}
+.tier-detail-inner span{display:inline-flex;align-items:center;gap:4px;margin-right:16px;color:#1A1916;font-weight:500}
+.tier-detail-inner span b{font-family:'DM Mono',monospace;color:#1B4FD8}
+
+/* FOOTER */
+.modal-foot{display:flex;align-items:center;padding:11px 20px;border-top:1px solid #E0DDD8;background:#FAFAF8;flex-shrink:0;gap:8px;border-radius:0 0 18px 18px}
+.foot-saved{font-size:11px;color:#16a34a;font-weight:600;display:flex;align-items:center;gap:5px}
+.foot-saved::before{content:'';width:7px;height:7px;border-radius:50%;background:#16a34a;flex-shrink:0}
+.foot-spacer{flex:1}
+.foot-btn{border:1px solid #E0DDD8;background:#fff;border-radius:9px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;color:#1A1916;transition:border-color .15s,box-shadow .15s}
+.foot-btn:hover{border-color:#C7D2FE;box-shadow:0 2px 8px rgba(27,79,216,.08)}
+.foot-btn.secondary{color:#7A776F;border-color:transparent;background:transparent}
+.foot-btn.secondary:hover{border-color:#E0DDD8;background:#fff;color:#1A1916}
+.foot-btn.primary{background:#1B4FD8;color:#fff;border-color:#1B4FD8;box-shadow:0 3px 10px rgba(27,79,216,.22)}
+.foot-btn.primary:hover{background:#1540b5;box-shadow:0 5px 14px rgba(27,79,216,.32)}
+
+/* NOTA DE MOCKUP */
+.mockup-note{position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#1A1916;color:#fff;font-size:11px;font-weight:600;padding:6px 14px;border-radius:20px;opacity:.75;letter-spacing:.02em;white-space:nowrap}
+</style>
+</head>
+<body>
+
+<div class="mockup-note">🎨 MOCKUP — apenas visual, não funcional</div>
+
+<div class="modal">
+
+  <!-- HEADER -->
+  <div class="modal-head">
+    <div class="modal-head-title">⚙ Configurar preços</div>
+    <button class="modal-close">×</button>
+  </div>
+
+  <!-- BODY -->
+  <div class="modal-body">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <span class="sidebar-label">Módulos</span>
+        <span class="sidebar-badge">2 divergências</span>
+      </div>
+      <div class="sidebar-list">
+        <div class="sidebar-group-label">Principais</div>
+        <div class="sidebar-item active">
+          <span class="sidebar-ico">🖥</span>
+          <span class="sidebar-name">App Base</span>
+          <span class="sidebar-status ok"></span>
+        </div>
+        <div class="sidebar-item">
+          <span class="sidebar-ico">🏥</span>
+          <span class="sidebar-name">Saúde</span>
+          <span class="sidebar-status warn"></span>
+        </div>
+        <div class="sidebar-item">
+          <span class="sidebar-ico">🎓</span>
+          <span class="sidebar-name">Educação</span>
+          <span class="sidebar-status ok"></span>
+        </div>
+        <div class="sidebar-item">
+          <span class="sidebar-ico">🤝</span>
+          <span class="sidebar-name">Assist. Social</span>
+          <span class="sidebar-status ok"></span>
+        </div>
+        <div class="sidebar-item">
+          <span class="sidebar-ico">🏠</span>
+          <span class="sidebar-name">Habitação</span>
+          <span class="sidebar-status ok"></span>
+        </div>
+        <div class="sidebar-item">
+          <span class="sidebar-ico">💼</span>
+          <span class="sidebar-name">Trabalho e Renda</span>
+          <span class="sidebar-status warn"></span>
+        </div>
+        <div class="sidebar-item">
+          <span class="sidebar-ico">🧹</span>
+          <span class="sidebar-name">Limpeza Urbana</span>
+          <span class="sidebar-status ok"></span>
+        </div>
+        <div class="sidebar-item">
+          <span class="sidebar-ico">🌱</span>
+          <span class="sidebar-name">Agricultura</span>
+          <span class="sidebar-status ok"></span>
+        </div>
+        <div class="sidebar-item">
+          <span class="sidebar-ico">🐾</span>
+          <span class="sidebar-name">Bem-estar Animal</span>
+          <span class="sidebar-status ok"></span>
+        </div>
+
+        <div class="sidebar-group-label">Adicionais</div>
+        <div class="sidebar-item">
+          <span class="sidebar-ico">🤖</span>
+          <span class="sidebar-name">IA</span>
+          <span class="sidebar-status ok"></span>
+        </div>
+        <div class="sidebar-item">
+          <span class="sidebar-ico">💬</span>
+          <span class="sidebar-name">WhatsApp</span>
+          <span class="sidebar-status ok"></span>
+        </div>
+        <div class="sidebar-item">
+          <span class="sidebar-ico">🌐</span>
+          <span class="sidebar-name">Site</span>
+          <span class="sidebar-status ok"></span>
+        </div>
+        <div class="sidebar-item">
+          <span class="sidebar-ico">📟</span>
+          <span class="sidebar-name">Totens</span>
+          <span class="sidebar-status ok"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+      <div class="content-header">
+        <div class="content-title">
+          <span>🖥</span> App Base
+        </div>
+        <span class="content-tag">✓ Alinhado com TP</span>
+      </div>
+
+      <div class="content-scroll">
+        <table class="tier-table">
+          <thead>
+            <tr>
+              <th>Faixa</th>
+              <th>Preço / ano</th>
+              <th>Desc. %</th>
+              <th>Valor final</th>
+              <th>vs TP</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tier-label">até 8 mil</span><span class="tier-sublabel">hab.</span></td>
+              <td><input class="tier-input" type="number" value="50150"></td>
+              <td><input class="tier-disc" type="number" value="63"></td>
+              <td><span class="tier-final">R$ 18.556</span></td>
+              <td><span class="tier-delta eq">=</span></td>
+              <td><button class="tier-expand">▸ itens</button></td>
+            </tr>
+            <tr class="tier-detail">
+              <td colspan="6">
+                <div class="tier-detail-inner">
+                  <span>Suporte <b>R$ 8.400</b></span>
+                  <span>Programador <b>R$ 24.000</b></span>
+                  <span>Monitor <b>R$ 12.000</b></span>
+                  <span>Admin <b>R$ 5.750</b></span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="tier-label">8–16 mil</span><span class="tier-sublabel">hab.</span></td>
+              <td><input class="tier-input" type="number" value="50150"></td>
+              <td><input class="tier-disc" type="number" value="42"></td>
+              <td><span class="tier-final">R$ 29.087</span></td>
+              <td><span class="tier-delta eq">=</span></td>
+              <td><button class="tier-expand">▸ itens</button></td>
+            </tr>
+            <tr>
+              <td><span class="tier-label">16–30 mil</span><span class="tier-sublabel">hab.</span></td>
+              <td><input class="tier-input" type="number" value="43120"></td>
+              <td><input class="tier-disc" type="number" value="35"></td>
+              <td><span class="tier-final">R$ 28.028</span></td>
+              <td><span class="tier-delta ne">−R$1.2k</span></td>
+              <td><button class="tier-expand">▸ itens</button></td>
+            </tr>
+            <tr>
+              <td><span class="tier-label">30–50 mil</span><span class="tier-sublabel">hab.</span></td>
+              <td><input class="tier-input" type="number" value="43120"></td>
+              <td><input class="tier-disc" type="number" value="30"></td>
+              <td><span class="tier-final">R$ 30.184</span></td>
+              <td><span class="tier-delta eq">=</span></td>
+              <td><button class="tier-expand">▸ itens</button></td>
+            </tr>
+            <tr>
+              <td><span class="tier-label">50–100 mil</span><span class="tier-sublabel">hab.</span></td>
+              <td><input class="tier-input" type="number" value="43120"></td>
+              <td><input class="tier-disc" type="number" value="25"></td>
+              <td><span class="tier-final">R$ 32.340</span></td>
+              <td><span class="tier-delta eq">=</span></td>
+              <td><button class="tier-expand">▸ itens</button></td>
+            </tr>
+            <tr>
+              <td><span class="tier-label">100–200 mil</span><span class="tier-sublabel">hab.</span></td>
+              <td><input class="tier-input" type="number" value="43120"></td>
+              <td><input class="tier-disc" type="number" value="20"></td>
+              <td><span class="tier-final">R$ 34.496</span></td>
+              <td><span class="tier-delta eq">=</span></td>
+              <td><button class="tier-expand">▸ itens</button></td>
+            </tr>
+            <tr>
+              <td><span class="tier-label">200–500 mil</span><span class="tier-sublabel">hab.</span></td>
+              <td><input class="tier-input" type="number" value="43120"></td>
+              <td><input class="tier-disc" type="number" value="15"></td>
+              <td><span class="tier-final">R$ 36.652</span></td>
+              <td><span class="tier-delta eq">=</span></td>
+              <td><button class="tier-expand">▸ itens</button></td>
+            </tr>
+            <tr>
+              <td><span class="tier-label">500k–1 mi</span><span class="tier-sublabel">hab.</span></td>
+              <td><input class="tier-input" type="number" value="43120"></td>
+              <td><input class="tier-disc" type="number" value="10"></td>
+              <td><span class="tier-final">R$ 38.808</span></td>
+              <td><span class="tier-delta eq">=</span></td>
+              <td><button class="tier-expand">▸ itens</button></td>
+            </tr>
+            <tr>
+              <td><span class="tier-label">acima de 1 mi</span><span class="tier-sublabel">hab.</span></td>
+              <td><input class="tier-input" type="number" value="43120"></td>
+              <td><input class="tier-disc" type="number" value="5"></td>
+              <td><span class="tier-final">R$ 40.964</span></td>
+              <td><span class="tier-delta eq">=</span></td>
+              <td><button class="tier-expand">▸ itens</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="modal-foot">
+    <span class="foot-saved">Salvo às 17:42</span>
+    <span class="foot-spacer"></span>
+    <button class="foot-btn secondary">Reverter</button>
+    <button class="foot-btn">Igualar a TP</button>
+    <button class="foot-btn primary">Exportar HTML</button>
+  </div>
+
+</div>
+
+</body>
+</html>
